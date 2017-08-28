@@ -605,6 +605,23 @@ function gutenberg_editor_scripts_and_styles( $hook ) {
 		'editor', 'window.wp.oldEditor = window.wp.editor;', 'after'
 	);
 
+	// Used to resize the legacy metabox iframes.
+	wp_enqueue_script(
+		'metabox-resizing-gutenberg',
+		gutenberg_url( 'assets/js/iframeResizer.js' ),
+		array( 'jquery' ),
+		filemtime( gutenberg_dir_path() . 'assets/js/iframeResizer.js' ),
+		true
+	);
+
+	wp_enqueue_script(
+		'metabox-gutenberg',
+		gutenberg_url( 'assets/js/metabox.js' ),
+		array( 'metabox-resizing-gutenberg', 'jquery' ),
+		filemtime( gutenberg_dir_path() . 'assets/js/metabox.js' ),
+		true
+	);
+
 	gutenberg_extend_wp_api_backbone_client();
 
 	// The editor code itself.
