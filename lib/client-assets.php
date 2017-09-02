@@ -797,6 +797,14 @@ function gutenberg_editor_scripts_and_styles( $hook ) {
 	}
 	wp_localize_script( 'wp-blocks', '_wpBlocksAttributes', $schemas );
 
+	// Get admin url for handling metaboxes.
+	$metabox_url = admin_url( 'post.php' );
+	$metabox_url = add_query_arg( array(
+		'post'   => $post_id,
+		'action' => 'edit',
+	), $metabox_url );
+	wp_localize_script( 'wp-editor', '_wpMetaboxUrl', $metabox_url );
+
 	// Initialize the editor.
 	$gutenberg_theme_support = get_theme_support( 'gutenberg' );
 	$color_palette = gutenberg_color_palette();

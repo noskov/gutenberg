@@ -6,6 +6,8 @@ import {
 	replaceBlocks,
 	startTyping,
 	stopTyping,
+	updateMetaboxes,
+	setMetaboxReference,
 } from '../actions';
 
 describe( 'actions', () => {
@@ -49,6 +51,28 @@ describe( 'actions', () => {
 		it( 'should return the STOP_TYPING action', () => {
 			expect( stopTyping() ).toEqual( {
 				type: 'STOP_TYPING',
+			} );
+		} );
+	} );
+
+	describe( 'updateMetaboxes', () => {
+		it( 'should return the UPDATE_METABOXES action', () => {
+			expect( updateMetaboxes() ).toEqual( {
+				type: 'UPDATE_METABOXES',
+			} );
+		} );
+	} );
+
+	describe( 'setMetaboxReference', () => {
+		it( 'should return the SET_METABOX_REFERENCE action with a location and node', () => {
+			const location = 'side';
+			const node = { i: 'is node' };
+			expect( setMetaboxReference( location, node ) ).toEqual( {
+				type: 'SET_METABOX_REFERENCE',
+				data: {
+					location,
+					node,
+				},
 			} );
 		} );
 	} );

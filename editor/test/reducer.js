@@ -24,6 +24,7 @@ import {
 	notices,
 	showInsertionPoint,
 	userData,
+	legacyMetaboxes,
 } from '../reducer';
 
 describe( 'state', () => {
@@ -964,6 +965,64 @@ describe( 'state', () => {
 				block => expect( getBlockType( block ).category ).toEqual( 'common' )
 			);
 			expect( initial.recentlyUsedBlocks ).toHaveLength( 8 );
+		} );
+	} );
+
+	describe( 'legacyMetaboxes()', () => {
+		it( 'should return an empty object by default', () => {
+			const actual = legacyMetaboxes( undefined, {} );
+			const expected = {};
+
+			expect( actual ).toEqual( expected );
+		} );
+		it( 'should add in metabox references', () => {
+			const action = {
+				type: 'SET_METABOX_REFERENCE',
+				data: {
+					location: 'side',
+					node: 'I am node',
+				},
+			};
+
+			const actual = legacyMetaboxes( undefined, action );
+			const expected = {
+				side: 'I am node',
+			};
+
+			expect( actual ).toEqual( expected );
+		} );
+		it( 'should override existing metabox references', () => {
+			const action = {
+				type: 'SET_METABOX_REFERENCE',
+				data: {
+					location: 'side',
+					node: 'I am node',
+				},
+			};
+
+			const actual = legacyMetaboxes( { side: 'Ref' }, action );
+			const expected = {
+				side: 'I am node',
+			};
+
+			expect( actual ).toEqual( expected );
+		} );
+		it( 'should build on top of existing metabox references for new locations', () => {
+			const action = {
+				type: 'SET_METABOX_REFERENCE',
+				data: {
+					location: 'side',
+					node: 'I am node',
+				},
+			};
+
+			const actual = legacyMetaboxes( { normal: 'Ref' }, action );
+			const expected = {
+				normal: 'Ref',
+				side: 'I am node',
+			};
+
+			expect( actual ).toEqual( expected );
 		} );
 	} );
 } );

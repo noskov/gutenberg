@@ -529,6 +529,15 @@ export function notices( state = {}, action ) {
 	return state;
 }
 
+export function legacyMetaboxes( state = {}, action ) {
+	switch ( action.type ) {
+		case 'SET_METABOX_REFERENCE':
+			return { ...state, [ action.data.location ]: action.data.node };
+		default:
+			return state;
+	}
+}
+
 export default optimist( combineReducers( {
 	editor,
 	currentPost,
@@ -541,4 +550,5 @@ export default optimist( combineReducers( {
 	saving,
 	notices,
 	userData,
+	legacyMetaboxes,
 } ) );

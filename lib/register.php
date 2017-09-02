@@ -21,11 +21,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 0.1.0
  */
 function the_gutenberg_project() {
-	// Somehow get post ID.
-	global $post;
+	/**
+	 * Somehow get post ID.
+	 *
+	 * IMPORTANT TO NOTE: This method potentially breaks around revisions.
+	 * Anyone who is more well versed in the intricacies of revisions should
+	 * help test this out.
+	 */
+	if ( isset( $_REQUEST['post_id'] ) ) {
+		$post = get_post( $_REQUEST['post_id'] );
+	} else {
+		global $post;
+	}
+
 	$post_id = $post->ID;
-	$meta_box_api_url = get_admin_url();
-	$meta_box_api_url = $meta_box_api_url . 'post.php';
+	$meta_box_api_url = admin_url( 'post.php' );
 	$meta_box_api_url = add_query_arg( array(
 		'post'    => $post_id,
 		'metabox' => 'some-location',
@@ -38,7 +48,6 @@ function the_gutenberg_project() {
 		<div id="editor" class="gutenberg__editor"></div>
 	</div>
 	<!-- Classic Metabox iFrame -->
-	<iframe id="gutenberg-metabox-iframe" class="gutenberg-metabox-iframe" style="width: 100%;" src="<?php echo esc_url_raw( $meta_box_api_url ); ?>"></iframe>
 	<?php
 }
 

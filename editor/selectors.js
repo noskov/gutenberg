@@ -804,3 +804,13 @@ export function getRecentlyUsedBlocks( state ) {
 	// resolves the block names in the state to the block type settings
 	return state.userData.recentlyUsedBlocks.map( blockType => getBlockType( blockType ) );
 }
+
+/**
+ * Returns the object of nodes for metaboxes.
+ *
+ * @param {Object} state Global application state
+ * @return {Object}       Map of location to metabox iframe.
+ */
+export function getMetaboxNodes( state ) {
+	return state.legacyMetaboxes;
+}

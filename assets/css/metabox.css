@@ -1,6 +1,7 @@
 /* Hides scrollbar to make iframe content seem as though it is part of the page. */
 .gutenberg-metabox-html {
 	overflow: hidden;
+	width: 100%;
 }
 
 .gutenberg-metabox-html.sidebar-open {

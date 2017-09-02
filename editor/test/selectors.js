@@ -61,6 +61,7 @@ import {
 	didPostSaveRequestFail,
 	getSuggestedPostFormat,
 	getNotices,
+	getMetaboxNodes,
 } from '../selectors';
 
 describe( 'selectors', () => {
@@ -1664,6 +1665,22 @@ describe( 'selectors', () => {
 				state.notices.b,
 				state.notices.a,
 			] );
+		} );
+	} );
+
+	describe( 'getMetaboxNodes', () => {
+		it( 'should return the notices array', () => {
+			const state = {
+				legacyMetaboxes: {
+					side: 'I am DOM Node',
+					normal: 'I am another DOM Node',
+				},
+			};
+
+			expect( getMetaboxNodes( state ) ).toEqual( {
+				side: 'I am DOM Node',
+				normal: 'I am another DOM Node',
+			} );
 		} );
 	} );
 } );

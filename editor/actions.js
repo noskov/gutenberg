@@ -317,6 +317,37 @@ export function removeNotice( id ) {
 	};
 }
 
+// Metabox related actions.
+
+/**
+ * Returns an action object used to trigger metabox updates.
+ *
+ * @return {Object}     Action object
+ */
+export function updateMetaboxes() {
+	return {
+		type: 'UPDATE_METABOXES',
+	};
+}
+
+/**
+ * Returns an action object used to set metabox DOM references.
+ *
+ * @param {String} location The metabox location: normal, advanced, side.
+ * @param {DOMElement} node The reference node of the metabox.
+ *
+ * @return {Object}     Action object
+ */
+export function setMetaboxReference( location, node ) {
+	return {
+		type: 'SET_METABOX_REFERENCE',
+		data: {
+			location,
+			node,
+		},
+	};
+}
+
 export const createSuccessNotice = partial( createNotice, 'success' );
 export const createInfoNotice = partial( createNotice, 'info' );
 export const createErrorNotice = partial( createNotice, 'error' );

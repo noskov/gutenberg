@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Silence is golden.' );
 }
 
-function gutenberg_meta_box_api() {
+/**
+ * Renders a partial page of metaboxes.
+ */
+function gutenberg_metabox_partial_page() {
 	/**
 	 * The metabox param as long as it is set on the wp-admin/post.php request
 	 * will trigger this API.
@@ -24,7 +27,7 @@ function gutenberg_meta_box_api() {
 	 * works just fine! Will only work on existing posts so far. Need to handle
 	 * this differently for new posts.
 	 */
-	if ( isset( $_REQUEST['metabox'] ) && $GLOBALS['pagenow'] === 'post.php' ) {
+	if ( isset( $_REQUEST['metabox'] ) && 'post.php' === $GLOBALS['pagenow'] ) {
 		global $post, $wp_meta_boxes, $hook_suffix, $current_screen, $wp_locale;
 
 		/* Scripts and styles that metaboxes can potentially be using */
@@ -81,10 +84,6 @@ function gutenberg_meta_box_api() {
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 		<?php
 
-		// More scripts.
-		//wp_enqueue_script( 'post' );
-		//wp_enqueue_script( 'editor-expand' );
-
 		/**
 		 * Enqueue scripts for all admin pages.
 		 *
@@ -139,37 +138,49 @@ function gutenberg_meta_box_api() {
 		 */
 		do_action( 'admin_head' );
 
-		if ( get_user_setting('mfold') == 'f' )
+		/**
+		 * The main way post.php sets body class.
+		 */
+		if ( get_user_setting( 'mfold' ) == 'f' ) {
 			$admin_body_class .= ' folded';
+		}
 
-		if ( !get_user_setting('unfold') )
+		if ( ! get_user_setting( 'unfold' ) ) {
 			$admin_body_class .= ' auto-fold';
+		}
 
-		if ( is_admin_bar_showing() )
+		if ( is_admin_bar_showing() ) {
 			$admin_body_class .= ' admin-bar';
+		}
 
-		if ( is_rtl() )
+		if ( is_rtl() ) {
 			$admin_body_class .= ' rtl';
+		}
 
-		if ( $current_screen->post_type )
+		if ( $current_screen->post_type ) {
 			$admin_body_class .= ' post-type-' . $current_screen->post_type;
+		}
 
-		if ( $current_screen->taxonomy )
+		if ( $current_screen->taxonomy ) {
 			$admin_body_class .= ' taxonomy-' . $current_screen->taxonomy;
+		}
 
 		$admin_body_class .= ' branch-' . str_replace( array( '.', ',' ), '-', floatval( get_bloginfo( 'version' ) ) );
 		$admin_body_class .= ' version-' . str_replace( '.', '-', preg_replace( '/^([.0-9]+).*/', '$1', get_bloginfo( 'version' ) ) );
 		$admin_body_class .= ' admin-color-' . sanitize_html_class( get_user_option( 'admin_color' ), 'fresh' );
 		$admin_body_class .= ' locale-' . sanitize_html_class( strtolower( str_replace( '_', '-', get_user_locale() ) ) );
 
-		if ( wp_is_mobile() )
+		if ( wp_is_mobile() ) {
 			$admin_body_class .= ' mobile';
+		}
 
-		if ( is_multisite() )
+		if ( is_multisite() ) {
 			$admin_body_class .= ' multisite';
+		}
 
-		if ( is_network_admin() )
+		if ( is_network_admin() ) {
 			$admin_body_class .= ' network-admin';
+		}
 
 		$admin_body_class .= ' no-customize-support no-svg';
 
@@ -192,6 +203,10 @@ function gutenberg_meta_box_api() {
 		 * @param string $classes Space-separated list of CSS classes.
 		 */
 		$admin_body_classes = apply_filters( 'admin_body_class', '' );
+
+		// This page should always match up with the edit action.
+		$action = 'edit';
+
 		?>
 		<body class="wp-admin wp-core-ui no-js <?php echo $admin_body_classes . ' ' . $admin_body_class; ?>">
 		<script type="text/javascript">
@@ -200,9 +215,10 @@ function gutenberg_meta_box_api() {
 		<?php
 		$notice = false;
 		$form_extra = '';
-		if ( 'auto-draft' == $post->post_status ) {
-			if ( 'edit' == $action )
+		if ( 'auto-draft' === $post->post_status ) {
+			if ( 'edit' === $action ) {
 				$post->post_title = '';
+			}
 			$autosave = false;
 			$form_extra .= "<input type='hidden' id='auto_draft' name='auto_draft' value='1' />";
 		} else {
@@ -213,7 +229,8 @@ function gutenberg_meta_box_api() {
 		$nonce_action = 'update-post_' . $post->ID;
 		$form_extra .= "<input type='hidden' id='post_ID' name='post_ID' value='" . esc_attr( $post->ID ) . "' />";
 		?>
-		<form name="post" action="post.php" method="post" id="post"<?php
+		<form name="post" action="post.php" method="post" id="post"
+		<?php
 		/**
 		 * Fires inside the post editor form tag.
 		 *
@@ -224,27 +241,28 @@ function gutenberg_meta_box_api() {
 		do_action( 'post_edit_form_tag', $post );
 
 		$referer = wp_get_referer();
-		?>><!-- End of Post Form Tag. -->
+		?>
+		><!-- End of Post Form Tag. -->
 		<?php wp_nonce_field( $nonce_action ); ?>
 		<?php
 			$current_user = wp_get_current_user();
-			$user_ID = $current_user->ID;
+			$user_id = $current_user->ID;
 		?>
-		<input type="hidden" id="user-id" name="user_ID" value="<?php echo (int) $user_ID ?>" />
-		<input type="hidden" id="hiddenaction" name="action" value="<?php echo esc_attr( $form_action ) ?>" />
-		<input type="hidden" id="originalaction" name="originalaction" value="<?php echo esc_attr( $form_action ) ?>" />
+		<input type="hidden" id="user-id" name="user_ID" value="<?php echo (int) $user_id; ?>" />
+		<input type="hidden" id="hiddenaction" name="action" value="<?php echo esc_attr( $form_action ); ?>" />
+		<input type="hidden" id="originalaction" name="originalaction" value="<?php echo esc_attr( $form_action ); ?>" />
 		<input type="hidden" id="post_author" name="post_author" value="<?php echo esc_attr( $post->post_author ); ?>" />
-		<input type="hidden" id="post_type" name="post_type" value="<?php echo esc_attr( $post->post_type ) ?>" />
-		<input type="hidden" id="original_post_status" name="original_post_status" value="<?php echo esc_attr( $post->post_status ) ?>" />
+		<input type="hidden" id="post_type" name="post_type" value="<?php echo esc_attr( $post->post_type ); ?>" />
+		<input type="hidden" id="original_post_status" name="original_post_status" value="<?php echo esc_attr( $post->post_status ); ?>" />
 		<input type="hidden" id="referredby" name="referredby" value="<?php echo $referer ? esc_url( $referer ) : ''; ?>" />
 		<!-- This field is not part of the standard post form and is used to signify this is a gutenberg metabox. -->
 		<input type="hidden" name="gutenberg_metaboxes" value="gutenberg_metaboxes" />
-		<?php if ( ! empty( $active_post_lock ) ) { ?>
+		<?php if ( ! empty( $active_post_lock ) ) : ?>
 		<input type="hidden" id="active_post_lock" value="<?php echo esc_attr( implode( ':', $active_post_lock ) ); ?>" />
+		<?php endif; ?>
 
 		<?php
-		}
-		if ( 'draft' != get_post_status( $post ) ) {
+		if ( 'draft' !== get_post_status( $post ) ) {
 			wp_original_referer_field( true, 'previous' );
 		}
 
@@ -267,10 +285,12 @@ function gutenberg_meta_box_api() {
 		 */
 		do_action( 'edit_form_top', $post );
 
-		// Rendering the metaboxes.
+		/**
+		 * Rendering the metaboxes.
+		 */
 
 		// Styles.
-		$heading_style = "display:flex;justify-content:space-between;align-items:center;font-size:14px;margin:0;line-height: 50px;height: 50px;padding: 0 15px;background-color: #eee;border-top: 1px solid #e4e2e7;border-bottom: 1px solid #e4e2e7;box-sizing: border-box;";
+		$heading_style = 'display:flex;justify-content:space-between;align-items:center;font-size:14px;margin:0;line-height: 50px;height: 50px;padding: 0 15px;background-color: #eee;border-top: 1px solid #e4e2e7;border-bottom: 1px solid #e4e2e7;box-sizing: border-box;';
 
 		/**
 		 * The #poststuff id selector is import for styles and scripts.
@@ -282,14 +302,15 @@ function gutenberg_meta_box_api() {
 		?>
 		<header class="gutenberg-metaboxes__header" style="<?php echo $heading_style; ?>">
 			<h2 style="font-size: 14px;">Extended Settings</h2>
-			<input name="save" type="submit" class="button button-primary button-large" id="publish" value="Update Settings">
+			<!-- @TODO leaving this commented out as it may need to be used. -->
+			<!--<input name="save" type="submit" class="button button-primary button-large" id="publish" value="Update Settings">-->
 		</header>
 		<div id="poststuff" class="sidebar-open">
 			<div class="gutenberg-metaboxes">
 				<div id="postbox-container-2" class="postbox-container">
 		<?php
 		$locations = array( 'normal', 'advanced', 'side' );
-		foreach( $locations as $location ) {
+		foreach ( $locations as $location ) {
 			do_meta_boxes(
 				null,
 				$location,
@@ -339,10 +360,11 @@ function gutenberg_meta_box_api() {
 		 */
 		do_action( "admin_footer-{$hook_suffix}" );
 
-		// get_site_option() won't exist when auto upgrading from <= 2.7
-		if ( function_exists('get_site_option') ) {
-			if ( false === get_site_option('can_compress_scripts') )
+		// get_site_option() won't exist when auto upgrading from <= 2.7.
+		if ( function_exists( 'get_site_option' ) ) {
+			if ( false === get_site_option( 'can_compress_scripts' ) ) {
 				compression_test();
+			}
 		}
 
 		?>
@@ -352,7 +374,8 @@ function gutenberg_meta_box_api() {
 		</html>
 
 		<?php
-		exit( 'YOLO, Gutenberg metaboxes in da haus' );
+		remove_all_actions( 'shutdown' );
+		exit();
 
 		/**
 		 * Shutdown hooks potentially firing.
@@ -362,11 +385,14 @@ function gutenberg_meta_box_api() {
 	}
 }
 
-add_action( 'do_meta_boxes', 'gutenberg_meta_box_api' );
+add_action( 'do_meta_boxes', 'gutenberg_metabox_partial_page' );
 
 /**
  * Allows the metabox endpoint to correctly redirect to the metabox endpoint
  * when a post is saved.
+ *
+ * @param string $location The location of the metabox, 'side', 'normal'.
+ * @param int    $post_id  Post ID.
  *
  * @hooked redirect_post_location priority 10
  */
