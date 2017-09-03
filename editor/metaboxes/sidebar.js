@@ -3,13 +3,12 @@
  */
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-// @TODO Should this be React or WordPress elements?
-import { Component } from 'react';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Component } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,7 +16,7 @@ import { __ } from '@wordpress/i18n';
 import './style.scss';
 import { setMetaboxReference } from '../actions';
 
-class Metaboxes extends Component {
+class SidebarMetaboxes extends Component {
 	constructor() {
 		super();
 
@@ -32,9 +31,8 @@ class Metaboxes extends Component {
 	}
 
 	render() {
-		const { location, isSidebarOpened, id = 'gutenberg-metabox-iframe' } = this.props;
+		const { location, id = 'gutenberg-metabox-iframe' } = this.props;
 		const classes = classnames( {
-			'sidebar-open': isSidebarOpened,
 			'gutenberg-metabox-iframe': true,
 		} );
 
@@ -59,4 +57,4 @@ function mapDispatchToProps( dispatch ) {
 	};
 }
 
-export default connect( null, mapDispatchToProps )( Metaboxes );
+export default connect( null, mapDispatchToProps )( SidebarMetaboxes );

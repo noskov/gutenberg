@@ -21,7 +21,7 @@ import UnsavedChangesWarning from '../unsaved-changes-warning';
 import DocumentTitle from '../document-title';
 import AutosaveMonitor from '../autosave-monitor';
 import { removeNotice } from '../actions';
-import Metaboxes from '../metaboxes';
+import Metaboxes from '../metaboxes/main.js';
 import {
 	getEditorMode,
 	isEditorSidebarOpened,

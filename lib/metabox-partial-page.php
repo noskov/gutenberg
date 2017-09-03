@@ -28,6 +28,10 @@ function gutenberg_metabox_partial_page() {
 	 * this differently for new posts.
 	 */
 	if ( isset( $_REQUEST['metabox'] ) && 'post.php' === $GLOBALS['pagenow'] ) {
+		if ( ! in_array( $_REQUEST['metabox'], array( 'side', 'normal', 'advanced' ), true ) ) {
+			wp_die( __( 'The metabox parameter should be one of "side", "normal", or "advanced".', 'gutenberg' ) );
+		}
+
 		global $post, $wp_meta_boxes, $hook_suffix, $current_screen, $wp_locale;
 
 		/* Scripts and styles that metaboxes can potentially be using */
@@ -98,7 +102,9 @@ function gutenberg_metabox_partial_page() {
 		 *
 		 * @since 2.6.0
 		 */
+		// @codingStandardsIgnoreStart
 		do_action( "admin_print_styles-{$hook_suffix}" );
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Fires when styles are printed for all admin pages.
@@ -112,7 +118,9 @@ function gutenberg_metabox_partial_page() {
 		 *
 		 * @since 2.1.0
 		 */
+		// @codingStandardsIgnoreStart
 		do_action( "admin_print_scripts-{$hook_suffix}" );
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Fires when scripts are printed for all admin pages.
@@ -129,7 +137,9 @@ function gutenberg_metabox_partial_page() {
 		 *
 		 * @since 2.1.0
 		 */
+		// @codingStandardsIgnoreStart
 		do_action( "admin_head-{$hook_suffix}" );
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Fires in head section for all admin pages.
@@ -255,8 +265,9 @@ function gutenberg_metabox_partial_page() {
 		<input type="hidden" id="post_type" name="post_type" value="<?php echo esc_attr( $post->post_type ); ?>" />
 		<input type="hidden" id="original_post_status" name="original_post_status" value="<?php echo esc_attr( $post->post_status ); ?>" />
 		<input type="hidden" id="referredby" name="referredby" value="<?php echo $referer ? esc_url( $referer ) : ''; ?>" />
-		<!-- This field is not part of the standard post form and is used to signify this is a gutenberg metabox. -->
+		<!-- These fields are not part of the standard post form. Used to redirect back to this page on save. -->
 		<input type="hidden" name="gutenberg_metaboxes" value="gutenberg_metaboxes" />
+		<input type="hidden" name="gutenberg_metabox_location" value="<?php echo esc_attr( $_REQUEST['metabox'] ); ?>" />
 		<?php if ( ! empty( $active_post_lock ) ) : ?>
 		<input type="hidden" id="active_post_lock" value="<?php echo esc_attr( implode( ':', $active_post_lock ) ); ?>" />
 		<?php endif; ?>
@@ -309,14 +320,31 @@ function gutenberg_metabox_partial_page() {
 			<div class="gutenberg-metaboxes">
 				<div id="postbox-container-2" class="postbox-container">
 		<?php
-		$locations = array( 'normal', 'advanced', 'side' );
-		foreach ( $locations as $location ) {
-			do_meta_boxes(
-				null,
-				$location,
-				$post
-			);
+		$_original_metaboxes = $wp_meta_boxes;
+		$wp_meta_boxes = gutenberg_filter_metaboxes( $wp_meta_boxes );
+
+		$locations = array();
+
+		if ( 'normal' === $_REQUEST['metabox'] || 'advanced' === $_REQUEST['metabox'] ) {
+			$locations = array( 'advanced', 'normal' );
 		}
+
+		if ( 'side' === $_REQUEST['metabox'] ) {
+			$locations = array( 'side' );
+		}
+
+		if ( ! empty( $locations ) ) {
+			foreach ( $locations as $location ) {
+				do_meta_boxes(
+					$current_screen,
+					$location,
+					$post
+				);
+			}
+		}
+
+		// Reset metaboxes.
+		$wp_meta_boxes = $_original_metaboxes;
 		?>
 		<!-- Don't ask why this works, but for some reason do_meta_boxes() will output closing div tags, but still needs this one. -->
 		</div>
@@ -385,7 +413,7 @@ function gutenberg_metabox_partial_page() {
 	}
 }
 
-add_action( 'do_meta_boxes', 'gutenberg_metabox_partial_page' );
+add_action( 'gutenberg_metaboxes', 'gutenberg_metabox_partial_page' );
 
 /**
  * Allows the metabox endpoint to correctly redirect to the metabox endpoint
@@ -397,13 +425,59 @@ add_action( 'do_meta_boxes', 'gutenberg_metabox_partial_page' );
  * @hooked redirect_post_location priority 10
  */
 function gutenberg_metabox_save_redirect( $location, $post_id ) {
-	if ( isset( $_REQUEST['gutenberg_metaboxes'] ) && 'gutenberg_metaboxes' === $_REQUEST['gutenberg_metaboxes'] ) {
-		$location = add_query_arg( 'metabox', 'taco', $location );
+	if ( isset( $_REQUEST['gutenberg_metaboxes'] )
+			&& isset( $_REQUEST['gutenberg_metabox_location'] )
+			&& 'gutenberg_metaboxes' === $_REQUEST['gutenberg_metaboxes'] ) {
+		$metabox_location = $_REQUEST['gutenberg_metabox_location'];
+		$location = add_query_arg( 'metabox', $metabox_location, $location );
 	}
 
 	return $location;
 }
 
 add_filter( 'redirect_post_location', 'gutenberg_metabox_save_redirect', 10, 2 );
+
+/**
+ * Filter out core metaboxes as well as the post thumbnail.
+ *
+ * @param array $metaboxes Metabox data.
+ */
+function gutenberg_filter_metaboxes( $metaboxes ) {
+	$core_side_metaboxes = array(
+		'submitdiv',
+		'formatdiv',
+		'categorydiv',
+		'tagsdiv-post_tag',
+		'postimagediv',
+	);
+
+	$core_normal_metaboxes = array(
+		'revisionsdiv',
+		'postexcerpt',
+		'trackbacksdiv',
+		'postcustom',
+		'commentstatusdiv',
+		'commentsdiv',
+		'slugdiv',
+		'authordiv',
+	);
+
+	foreach ( $metaboxes as $page => $contexts ) {
+		foreach ( $contexts as $context => $priorities ) {
+			foreach ( $priorities as $priority => $box ) {
+				foreach ( $box as $name => $data ) {
+					if ( 'normal' === $context && in_array( $name, $core_normal_metaboxes, true ) ) {
+						unset( $metaboxes[ $page ][ $context ][ $priority ][ $name ] );
+					}
+					if ( 'side' === $context && in_array( $name, $core_side_metaboxes, true ) ) {
+						unset( $metaboxes[ $page ][ $context ][ $priority ][ $name ] );
+					}
+				}
+			}
+		}
+	}
+
+	return $metaboxes;
+}
 
 ?>
