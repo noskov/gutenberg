@@ -91,7 +91,7 @@ function gutenberg_metabox_partial_page() {
 		/**
 		 * Enqueue scripts for all admin pages.
 		 *
-		 * @since 2.8.0
+		 * @since wp-core 2.8.0
 		 *
 		 * @param string $hook_suffix The current admin page.
 		 */
@@ -100,7 +100,7 @@ function gutenberg_metabox_partial_page() {
 		/**
 		 * Fires when styles are printed for a specific admin page based on $hook_suffix.
 		 *
-		 * @since 2.6.0
+		 * @since wp-core 2.6.0
 		 */
 		// @codingStandardsIgnoreStart
 		do_action( "admin_print_styles-{$hook_suffix}" );
@@ -109,14 +109,14 @@ function gutenberg_metabox_partial_page() {
 		/**
 		 * Fires when styles are printed for all admin pages.
 		 *
-		 * @since 2.6.0
+		 * @since wp-core 2.6.0
 		 */
 		do_action( 'admin_print_styles' );
 
 		/**
 		 * Fires when scripts are printed for a specific admin page based on $hook_suffix.
 		 *
-		 * @since 2.1.0
+		 * @since wp-core 2.1.0
 		 */
 		// @codingStandardsIgnoreStart
 		do_action( "admin_print_scripts-{$hook_suffix}" );
@@ -125,7 +125,7 @@ function gutenberg_metabox_partial_page() {
 		/**
 		 * Fires when scripts are printed for all admin pages.
 		 *
-		 * @since 2.1.0
+		 * @since wp-core 2.1.0
 		 */
 		do_action( 'admin_print_scripts' );
 
@@ -135,7 +135,7 @@ function gutenberg_metabox_partial_page() {
 		 * The dynamic portion of the hook, `$hook_suffix`, refers to the hook suffix
 		 * for the admin page.
 		 *
-		 * @since 2.1.0
+		 * @since wp-core 2.1.0
 		 */
 		// @codingStandardsIgnoreStart
 		do_action( "admin_head-{$hook_suffix}" );
@@ -144,7 +144,7 @@ function gutenberg_metabox_partial_page() {
 		/**
 		 * Fires in head section for all admin pages.
 		 *
-		 * @since 2.1.0
+		 * @since wp-core 2.1.0
 		 */
 		do_action( 'admin_head' );
 
@@ -208,7 +208,7 @@ function gutenberg_metabox_partial_page() {
 		 * 2. Not all core admin classes are filterable, notably: wp-admin, wp-core-ui,
 		 *    and no-js cannot be removed.
 		 *
-		 * @since 2.3.0
+		 * @since wp-core 2.3.0
 		 *
 		 * @param string $classes Space-separated list of CSS classes.
 		 */
@@ -244,7 +244,7 @@ function gutenberg_metabox_partial_page() {
 		/**
 		 * Fires inside the post editor form tag.
 		 *
-		 * @since 3.0.0
+		 * @since wp-core 3.0.0
 		 *
 		 * @param WP_Post $post Post object.
 		 */
@@ -290,15 +290,11 @@ function gutenberg_metabox_partial_page() {
 		 *
 		 * At this point, the required hidden fields and nonces have already been output.
 		 *
-		 * @since 3.7.0
+		 * @since wp-core 3.7.0
 		 *
 		 * @param WP_Post $post Post object.
 		 */
 		do_action( 'edit_form_top', $post );
-
-		/**
-		 * Rendering the metaboxes.
-		 */
 
 		// Styles.
 		$heading_style = 'display:flex;justify-content:space-between;align-items:center;font-size:14px;margin:0;line-height: 50px;height: 50px;padding: 0 15px;background-color: #eee;border-top: 1px solid #e4e2e7;border-bottom: 1px solid #e4e2e7;box-sizing: border-box;';
@@ -321,7 +317,19 @@ function gutenberg_metabox_partial_page() {
 				<div id="postbox-container-2" class="postbox-container">
 		<?php
 		$_original_metaboxes = $wp_meta_boxes;
-		$wp_meta_boxes = gutenberg_filter_metaboxes( $wp_meta_boxes );
+
+		/**
+		 * Fires right before the metaboxes are rendered.
+		 *
+		 * This allows for the filtering of metabox data, that should already be
+		 * present by this point. Do not use as a means of adding metabox data.
+		 *
+		 * By default gutenberg_filter_metaboxes() is hooked in and can be
+		 * unhooked to restore core metaboxes.
+		 *
+		 * @param WP_Post $post Post object.
+		 */
+		$wp_meta_boxes = apply_filters( 'gutenberg_metaboxes', $wp_meta_boxes );
 
 		$locations = array();
 
@@ -353,7 +361,7 @@ function gutenberg_metabox_partial_page() {
 		/**
 		 * Prints scripts or data before the default footer scripts.
 		 *
-		 * @since 1.2.0
+		 * @since wp-core 1.2.0
 		 *
 		 * @param string $data The data to print.
 		 */
@@ -365,14 +373,16 @@ function gutenberg_metabox_partial_page() {
 		 * The dynamic portion of the hook name, `$hook_suffix`,
 		 * refers to the global hook suffix of the current page.
 		 *
-		 * @since 4.6.0
+		 * @since wp-core 4.6.0
 		 */
+		// @codingStandardsIgnoreStart
 		do_action( "admin_print_footer_scripts-{$hook_suffix}" );
+		// @codingStandardsIgnoreEnd
 
 		/**
 		 * Prints any scripts and data queued for the footer.
 		 *
-		 * @since 2.8.0
+		 * @since wp-core 2.8.0
 		 *
 		 * @note This seems to be where most styles etc are hooked into.
 		 */
@@ -384,9 +394,11 @@ function gutenberg_metabox_partial_page() {
 		 * The dynamic portion of the hook name, `$hook_suffix`,
 		 * refers to the global hook suffix of the current page.
 		 *
-		 * @since 2.8.0
+		 * @since wp-core 2.8.0
 		 */
+		// @codingStandardsIgnoreStart
 		do_action( "admin_footer-{$hook_suffix}" );
+		// @codingStandardsIgnoreEnd
 
 		// get_site_option() won't exist when auto upgrading from <= 2.7.
 		if ( function_exists( 'get_site_option' ) ) {
@@ -479,5 +491,7 @@ function gutenberg_filter_metaboxes( $metaboxes ) {
 
 	return $metaboxes;
 }
+
+add_filter( 'gutenberg_metaboxes', 'gutenberg_filter_metaboxes', 10, 1 );
 
 ?>
