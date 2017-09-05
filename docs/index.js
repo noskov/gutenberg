@@ -23,6 +23,12 @@ addStory( {
 } );
 
 addStory( {
+	name: 'the-language',
+	title: 'Grammar',
+	markdown: require( './grammar.md' ),
+} );
+
+addStory( {
 	name: 'blocks',
 	title: 'Creating Block Types',
 	markdown: require( './blocks.md' ),
