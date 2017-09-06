@@ -329,7 +329,7 @@ function gutenberg_metabox_partial_page() {
 		 *
 		 * @param WP_Post $post Post object.
 		 */
-		$wp_meta_boxes = apply_filters( 'gutenberg_metaboxes', $wp_meta_boxes );
+		$wp_meta_boxes = apply_filters( 'filter_gutenberg_metaboxes', $wp_meta_boxes );
 
 		$locations = array();
 
@@ -492,6 +492,6 @@ function gutenberg_filter_metaboxes( $metaboxes ) {
 	return $metaboxes;
 }
 
-add_filter( 'gutenberg_metaboxes', 'gutenberg_filter_metaboxes', 10, 1 );
+add_filter( 'filter_gutenberg_metaboxes', 'gutenberg_filter_metaboxes', 10, 1 );
 
 ?>
