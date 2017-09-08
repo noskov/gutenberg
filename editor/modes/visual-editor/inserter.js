@@ -36,10 +36,6 @@ export class VisualEditorInserter extends Component {
 		this.setState( { isShowingControls } );
 	}
 
-	hideControls() {
-		this.setState( { isShowingControls: false } );
-	}
-
 	insertBlock( name ) {
 		const { onInsertBlock } = this.props;
 		onInsertBlock( createBlock( name ) );
