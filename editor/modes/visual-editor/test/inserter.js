@@ -14,7 +14,7 @@ describe( 'VisualEditorInserter', () => {
 
 		wrapper.simulate( 'focus' );
 
-		expect( wrapper.state( 'isOpen' ) ).toBe( true );
+		expect( wrapper.state( 'isShowingControls' ) ).toBe( true );
 	} );
 
 	it( 'should close when losing focus', () => {
@@ -23,7 +23,7 @@ describe( 'VisualEditorInserter', () => {
 		wrapper.simulate( 'focus' );
 		wrapper.simulate( 'blur' );
 
-		expect( wrapper.state( 'isOpen' ) ).toBe( false );
+		expect( wrapper.state( 'isShowingControls' ) ).toBe( false );
 	} );
 
 	it( 'should insert paragraph block', () => {

@@ -22,22 +22,22 @@ export class VisualEditorInserter extends Component {
 	constructor() {
 		super( ...arguments );
 
-		this.open = this.open.bind( this );
-		this.close = this.close.bind( this );
+		this.showControls = this.toggleControls.bind( this, true );
+		this.hideControls = this.toggleControls.bind( this, false );
 		this.insertParagraph = this.insertBlock.bind( this, 'core/paragraph' );
 		this.insertImage = this.insertBlock.bind( this, 'core/image' );
 
 		this.state = {
-			isOpen: false,
+			isShowingControls: false,
 		};
 	}
 
-	open() {
-		this.setState( { isOpen: true } );
+	toggleControls( isShowingControls ) {
+		this.setState( { isShowingControls } );
 	}
 
-	close() {
-		this.setState( { isOpen: false } );
+	hideControls() {
+		this.setState( { isShowingControls: false } );
 	}
 
 	insertBlock( name ) {
@@ -46,16 +46,16 @@ export class VisualEditorInserter extends Component {
 	}
 
 	render() {
-		const { isOpen } = this.state;
+		const { isShowingControls } = this.state;
 		const classes = classnames( 'editor-visual-editor__inserter', {
-			'is-showing-controls': isOpen,
+			'is-showing-controls': isShowingControls,
 		} );
 
 		return (
 			<div
 				className={ classes }
-				onFocus={ this.open }
-				onBlur={ this.close }
+				onFocus={ this.showControls }
+				onBlur={ this.hideControls }
 			>
 				<Inserter position="top right" />
 				<IconButton
