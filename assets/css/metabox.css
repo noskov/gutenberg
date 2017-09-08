@@ -145,3 +145,7 @@ textarea {
 .acf_postbox .inside {
 	padding: 15px !important;
 }
+
+#post {
+	margin: 0;
+}

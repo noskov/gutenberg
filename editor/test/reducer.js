@@ -969,57 +969,62 @@ describe( 'state', () => {
 	} );
 
 	describe( 'legacyMetaboxes()', () => {
-		it( 'should return an empty object by default', () => {
+		it( 'should return default state', () => {
 			const actual = legacyMetaboxes( undefined, {} );
-			const expected = {};
-
-			expect( actual ).toEqual( expected );
-		} );
-		it( 'should add in metabox references', () => {
-			const action = {
-				type: 'SET_METABOX_REFERENCE',
-				data: {
-					location: 'side',
-					node: 'I am node',
-				},
-			};
-
-			const actual = legacyMetaboxes( undefined, action );
 			const expected = {
-				side: 'I am node',
+				normal: {
+					isUpdating: false,
+					isDirty: false,
+				},
+				side: {
+					isUpdating: false,
+					isDirty: false,
+				},
 			};
 
 			expect( actual ).toEqual( expected );
 		} );
-		it( 'should override existing metabox references', () => {
+		it( 'should switch updating to off', () => {
 			const action = {
-				type: 'SET_METABOX_REFERENCE',
-				data: {
-					location: 'side',
-					node: 'I am node',
-				},
+				type: 'HANDLE_METABOX_RELOAD',
+				location: 'normal',
 			};
 
-			const actual = legacyMetaboxes( { side: 'Ref' }, action );
+			const metaboxes = legacyMetaboxes( { normal: { isUpdating: true } }, action );
+			const actual = metaboxes.normal;
 			const expected = {
-				side: 'I am node',
+				isUpdating: false,
+				isDirty: false,
 			};
 
 			expect( actual ).toEqual( expected );
 		} );
-		it( 'should build on top of existing metabox references for new locations', () => {
+		it( 'should switch updating to on', () => {
 			const action = {
-				type: 'SET_METABOX_REFERENCE',
-				data: {
-					location: 'side',
-					node: 'I am node',
-				},
+				type: 'REQUEST_METABOX_UPDATE',
+				location: 'normal',
 			};
 
-			const actual = legacyMetaboxes( { normal: 'Ref' }, action );
+			const metaboxes = legacyMetaboxes( undefined, action );
+			const actual = metaboxes.normal;
 			const expected = {
-				normal: 'Ref',
-				side: 'I am node',
+				isUpdating: true,
+				isDirty: false,
+			};
+
+			expect( actual ).toEqual( expected );
+		} );
+		it( 'should return with the isDirty flag as true', () => {
+			const action = {
+				type: 'METABOX_STATE_CHANGED',
+				location: 'normal',
+				hasChanged: true,
+			};
+			const metaboxes = legacyMetaboxes( undefined, action );
+			const actual = metaboxes.normal;
+			const expected = {
+				isDirty: true,
+				isUpdating: false,
 			};
 
 			expect( actual ).toEqual( expected );

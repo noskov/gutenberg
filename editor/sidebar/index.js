@@ -16,7 +16,7 @@ import './style.scss';
 import PostSettings from './post-settings';
 import BlockInspector from './block-inspector';
 import Header from './header';
-import SidebarMetaboxes from '../metaboxes/sidebar.js';
+import Metaboxes from '../metaboxes';
 import { getActivePanel } from '../selectors';
 
 const Sidebar = ( { panel } ) => {
@@ -25,7 +25,7 @@ const Sidebar = ( { panel } ) => {
 			<Header />
 			{ panel === 'document' && [
 				<PostSettings key="settings" />,
-				<SidebarMetaboxes key="metabox" location="side" id="gutenberg-metabox-iframe-sidebar" />,
+				<Metaboxes className="gutenberg-metabox-iframe" key="metaboxes" location="side" id="gutenberg-metabox-iframe-sidebar" isSidebarOpened={ true } />,
 			] }
 			{ panel === 'block' && <BlockInspector /> }
 		</div>

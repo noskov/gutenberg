@@ -25,7 +25,7 @@ import {
 	removeNotice,
 	savePost,
 	editPost,
-	updateMetaboxes,
+	requestMetaboxUpdate,
 } from './actions';
 import {
 	getCurrentPost,
@@ -36,7 +36,6 @@ import {
 	isEditedPostDirty,
 	isEditedPostNew,
 	isEditedPostSaveable,
-	getMetaboxNodes,
 } from './selectors';
 
 const SAVE_POST_NOTICE_ID = 'SAVE_POST_NOTICE_ID';
@@ -116,7 +115,8 @@ export default {
 		}
 
 		// Update metaboxes.
-		dispatch( updateMetaboxes() );
+		dispatch( requestMetaboxUpdate( 'normal' ) );
+		dispatch( requestMetaboxUpdate( 'side' ) );
 
 		if ( get( window.history.state, 'id' ) !== post.id ) {
 			window.history.replaceState(
@@ -277,15 +277,5 @@ export default {
 		}
 
 		return effects;
-	},
-	UPDATE_METABOXES( action, store ) {
-		const { getState } = store;
-		const state = getState();
-		const metaboxes = getMetaboxNodes( state );
-		Object.values( metaboxes ).forEach( ( iframe ) => {
-			// The standard post.php form ID post should probably be mimicked.
-			const form = iframe.contentWindow.document.getElementById( 'post' );
-			form.submit();
-		} );
 	},
 };

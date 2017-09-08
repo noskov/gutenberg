@@ -2,7 +2,7 @@
  * External dependencies
  */
 import moment from 'moment';
-import { first, last, values, some, isEqual } from 'lodash';
+import { first, last, values, some, isEqual, forOwn } from 'lodash';
 import createSelector from 'rememo';
 
 /**
@@ -21,6 +21,38 @@ import { addQueryArgs } from '@wordpress/url';
 export function getEditorMode( state ) {
 	return getPreference( state, 'mode', 'visual' );
 }
+
+/**
+ * Returns the state of legacy metaboxes.
+ *
+ * @param  {Object}  state Global application state
+ * @return {Object}        State of metaboxes
+ */
+export function getMetaboxes( state ) {
+	return state.legacyMetaboxes;
+}
+
+/**
+ * Returns the state of legacy metaboxes.
+ *
+ * @param  {Object}  state Global application state
+ * @return {Object}        State of metaboxes
+ */
+export const isMetaboxStateDirty = createSelector(
+	( state ) => {
+		let isDirty = false;
+		const metaboxes = getMetaboxes( state );
+
+		forOwn( metaboxes, ( value ) => {
+			if ( value.isDirty === true ) {
+				isDirty = true;
+			}
+		} );
+
+		return isDirty;
+	},
+	( state ) => state.legacyMetaboxes,
+);
 
 /**
  * Returns the current active panel for the sidebar.
@@ -128,6 +160,10 @@ export const isEditedPostDirty = createSelector(
 			return true;
 		}
 
+		if ( isMetaboxStateDirty( state ) === true ) {
+			return true;
+		}
+
 		// This is a cheaper operation that still must occur after checking
 		// attributes, because a post initialized with attributes different
 		// from its saved copy should be considered dirty.
@@ -152,6 +188,7 @@ export const isEditedPostDirty = createSelector(
 	( state ) => [
 		state.editor,
 		state.currentPost,
+		state.legacyMetaboxes,
 	]
 );
 
@@ -803,14 +840,4 @@ export function getNotices( state ) {
 export function getRecentlyUsedBlocks( state ) {
 	// resolves the block names in the state to the block type settings
 	return state.userData.recentlyUsedBlocks.map( blockType => getBlockType( blockType ) );
-}
-
-/**
- * Returns the object of nodes for metaboxes.
- *
- * @param {Object} state Global application state
- * @return {Object}       Map of location to metabox iframe.
- */
-export function getMetaboxNodes( state ) {
-	return state.legacyMetaboxes;
 }

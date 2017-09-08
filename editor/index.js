@@ -63,6 +63,7 @@ if ( dateSettings.timezone.string ) {
  * @param {String}  id       Unique identifier for editor instance
  * @param {Object}  post     API entity for post to edit
  * @param {?Object} settings Editor settings object
+ * @return {Object} The Redux store of the editor.
  */
 export function createEditorInstance( id, post, settings ) {
 	const store = createReduxStore();
@@ -149,4 +150,6 @@ export function createEditorInstance( id, post, settings ) {
 	);
 
 	render( createEditorElement( <Layout /> ), target );
+
+	return store;
 }

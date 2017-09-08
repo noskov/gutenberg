@@ -529,10 +529,25 @@ export function notices( state = {}, action ) {
 	return state;
 }
 
-export function legacyMetaboxes( state = {}, action ) {
+const defaultMetaboxState = {
+	normal: {
+		isUpdating: false,
+		isDirty: false,
+	},
+	side: {
+		isUpdating: false,
+		isDirty: false,
+	},
+};
+
+export function legacyMetaboxes( state = defaultMetaboxState, action ) {
 	switch ( action.type ) {
-		case 'SET_METABOX_REFERENCE':
-			return { ...state, [ action.data.location ]: action.data.node };
+		case 'HANDLE_METABOX_RELOAD':
+			return { ...state, [ action.location ]: { isUpdating: false, isDirty: false } };
+		case 'REQUEST_METABOX_UPDATE':
+			return { ...state, [ action.location ]: { ...state[ action.location ], isUpdating: true } };
+		case 'METABOX_STATE_CHANGED':
+			return { ...state, [ action.location ]: { ...state[ action.location ], isDirty: action.hasChanged } };
 		default:
 			return state;
 	}

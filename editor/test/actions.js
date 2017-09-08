@@ -6,8 +6,9 @@ import {
 	replaceBlocks,
 	startTyping,
 	stopTyping,
-	updateMetaboxes,
-	setMetaboxReference,
+	requestMetaboxUpdate,
+	handleMetaboxReload,
+	metaboxStateChanged,
 } from '../actions';
 
 describe( 'actions', () => {
@@ -55,24 +56,30 @@ describe( 'actions', () => {
 		} );
 	} );
 
-	describe( 'updateMetaboxes', () => {
-		it( 'should return the UPDATE_METABOXES action', () => {
-			expect( updateMetaboxes() ).toEqual( {
-				type: 'UPDATE_METABOXES',
+	describe( 'requestMetaboxUpdate', () => {
+		it( 'should return the REQUEST_METABOX_UPDATE action', () => {
+			expect( requestMetaboxUpdate( 'normal' ) ).toEqual( {
+				type: 'REQUEST_METABOX_UPDATE',
+				location: 'normal',
 			} );
 		} );
 	} );
 
-	describe( 'setMetaboxReference', () => {
-		it( 'should return the SET_METABOX_REFERENCE action with a location and node', () => {
-			const location = 'side';
-			const node = { i: 'is node' };
-			expect( setMetaboxReference( location, node ) ).toEqual( {
-				type: 'SET_METABOX_REFERENCE',
-				data: {
-					location,
-					node,
-				},
+	describe( 'handleMetaboxReload', () => {
+		it( 'should return the HANDLE_METABOX_RELOAD action with a location and node', () => {
+			expect( handleMetaboxReload( 'normal' ) ).toEqual( {
+				type: 'HANDLE_METABOX_RELOAD',
+				location: 'normal',
+			} );
+		} );
+	} );
+
+	describe( 'metaboxStateChanged', () => {
+		it( 'should return the METABOX_STATE_CHANGED action with a hasChanged flag', () => {
+			expect( metaboxStateChanged( 'normal', true ) ).toEqual( {
+				type: 'METABOX_STATE_CHANGED',
+				location: 'normal',
+				hasChanged: true,
 			} );
 		} );
 	} );

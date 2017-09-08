@@ -318,33 +318,47 @@ export function removeNotice( id ) {
 }
 
 // Metabox related actions.
-
 /**
- * Returns an action object used to trigger metabox updates.
+ * Returns an action object used to signify that a metabox finished reloading.
  *
- * @return {Object}     Action object
+ * @param {String} location Location of metabox: 'normal', 'sidebar'.
+ *
+ * @return {Object} Action object
  */
-export function updateMetaboxes() {
+export function handleMetaboxReload( location ) {
 	return {
-		type: 'UPDATE_METABOXES',
+		type: 'HANDLE_METABOX_RELOAD',
+		location,
 	};
 }
 
 /**
- * Returns an action object used to set metabox DOM references.
+ * Returns an action object used to request metabox update.
  *
- * @param {String} location The metabox location: normal, advanced, side.
- * @param {DOMElement} node The reference node of the metabox.
+ * @param {String} location Location of metabox: 'normal', 'sidebar'.
  *
  * @return {Object}     Action object
  */
-export function setMetaboxReference( location, node ) {
+export function requestMetaboxUpdate( location ) {
 	return {
-		type: 'SET_METABOX_REFERENCE',
-		data: {
-			location,
-			node,
-		},
+		type: 'REQUEST_METABOX_UPDATE',
+		location,
+	};
+}
+
+/**
+ * Returns an action object used to set metabox state changed.
+ *
+ * @param {String} location Location of metabox: 'normal', 'sidebar'.
+ * @param {Boolean}     hasChanged Whether the metabox has changed.
+ *
+ * @return {Object}     Action object
+ */
+export function metaboxStateChanged( location, hasChanged ) {
+	return {
+		type: 'METABOX_STATE_CHANGED',
+		location,
+		hasChanged,
 	};
 }
 

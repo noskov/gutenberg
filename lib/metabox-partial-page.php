@@ -28,6 +28,7 @@ function gutenberg_metabox_partial_page() {
 	 * this differently for new posts.
 	 */
 	if ( isset( $_REQUEST['metabox'] ) && 'post.php' === $GLOBALS['pagenow'] ) {
+		$location = $_REQUEST['metabox'];
 		if ( ! in_array( $_REQUEST['metabox'], array( 'side', 'normal', 'advanced' ), true ) ) {
 			wp_die( __( 'The metabox parameter should be one of "side", "normal", or "advanced".', 'gutenberg' ) );
 		}
@@ -55,10 +56,10 @@ function gutenberg_metabox_partial_page() {
 		);
 
 		wp_enqueue_script(
-			'metabox-resize-gutenberg',
-			gutenberg_url( 'assets/js/iframeResizer.contentWindow.js' ),
+			'metabox-gutenberg',
+			gutenberg_url( 'assets/js/metabox.js' ),
 			array(),
-			filemtime( gutenberg_dir_path() . 'assets/js/iframeResizer.contentWindow.js' ),
+			filemtime( gutenberg_dir_path() . 'assets/js/metabox.js' ),
 			true
 		);
 
@@ -239,7 +240,7 @@ function gutenberg_metabox_partial_page() {
 		$nonce_action = 'update-post_' . $post->ID;
 		$form_extra .= "<input type='hidden' id='post_ID' name='post_ID' value='" . esc_attr( $post->ID ) . "' />";
 		?>
-		<form name="post" action="post.php" method="post" id="post"
+		<form name="post" action="post.php" method="post" id="post" data-location="<?php echo esc_attr( $location ); ?>"
 		<?php
 		/**
 		 * Fires inside the post editor form tag.

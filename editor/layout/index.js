@@ -21,7 +21,7 @@ import UnsavedChangesWarning from '../unsaved-changes-warning';
 import DocumentTitle from '../document-title';
 import AutosaveMonitor from '../autosave-monitor';
 import { removeNotice } from '../actions';
-import Metaboxes from '../metaboxes/main.js';
+import Metaboxes from '../metaboxes';
 import {
 	getEditorMode,
 	isEditorSidebarOpened,
@@ -46,7 +46,7 @@ function Layout( { mode, isSidebarOpened, notices, ...props } ) {
 			</div>
 			{ isSidebarOpened && <Sidebar /> }
 		</div>,
-		<Metaboxes key="metaboxes" location="normal" isSidebarOpened={ isSidebarOpened } />,
+		<Metaboxes className="gutenberg-metabox-iframe" key="metaboxes" location="normal" isSidebarOpened={ isSidebarOpened } />,
 	];
 }
 
