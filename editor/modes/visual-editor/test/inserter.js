@@ -9,7 +9,7 @@ import { shallow } from 'enzyme';
 import { VisualEditorInserter } from '../inserter';
 
 describe( 'VisualEditorInserter', () => {
-	it( 'should open when receiving focus', () => {
+	it( 'should show controls when receiving focus', () => {
 		const wrapper = shallow( <VisualEditorInserter /> );
 
 		wrapper.simulate( 'focus' );
@@ -17,7 +17,7 @@ describe( 'VisualEditorInserter', () => {
 		expect( wrapper.state( 'isShowingControls' ) ).toBe( true );
 	} );
 
-	it( 'should close when losing focus', () => {
+	it( 'should hide controls when losing focus', () => {
 		const wrapper = shallow( <VisualEditorInserter /> );
 
 		wrapper.simulate( 'focus' );
