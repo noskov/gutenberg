@@ -442,7 +442,14 @@ function gutenberg_metabox_save_redirect( $location, $post_id ) {
 			&& isset( $_REQUEST['gutenberg_metabox_location'] )
 			&& 'gutenberg_metaboxes' === $_REQUEST['gutenberg_metaboxes'] ) {
 		$metabox_location = $_REQUEST['gutenberg_metabox_location'];
-		$location = add_query_arg( 'metabox', $metabox_location, $location );
+		$location = add_query_arg(
+			array(
+				'metabox' => $metabox_location,
+				'action' => 'edit',
+				'post' => $post_id,
+			),
+			admin_url( 'post.php' )
+		);
 	}
 
 	return $location;
