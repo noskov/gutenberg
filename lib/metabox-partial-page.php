@@ -426,7 +426,7 @@ function gutenberg_metabox_partial_page() {
 	}
 }
 
-add_action( 'gutenberg_metaboxes', 'gutenberg_metabox_partial_page' );
+add_action( 'do_meta_boxes', 'gutenberg_metabox_partial_page' );
 
 /**
  * Allows the metabox endpoint to correctly redirect to the metabox endpoint
