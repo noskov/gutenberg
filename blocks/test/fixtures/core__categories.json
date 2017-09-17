@@ -1,13 +1,11 @@
 [
     {
         "uid": "_uid_0",
-        "name": "core/categories",
+        "name": "core/freeform",
         "isValid": true,
         "attributes": {
-            "showPostCounts": false,
-            "displayAsDropdown": false,
-            "showHierarchy": false
+            "content": "<!-- wp:core/categories {\"showPostCounts\":false,\"displayAsDropdown\":false,\"showHierarchy\":false} /-->"
         },
-        "originalContent": ""
+        "originalContent": "<!-- wp:core/categories {\"showPostCounts\":false,\"displayAsDropdown\":false,\"showHierarchy\":false} /-->"
     }
 ]

@@ -2,10 +2,7 @@
     {
         "blockName": "core/heading",
         "attrs": null,
-        "rawContent": "\n<h2>The <em>Inserter</em> Tool</h2>\n"
-    },
-    {
-        "attrs": {},
-        "rawContent": "\n"
+        "innerBlocks": [],
+        "innerHtml": "\n<h2>The <em>Inserter</em> Tool</h2>\n"
     }
 ]

@@ -1,14 +1,6 @@
 [
     {
-        "blockName": "core/more",
-        "attrs": {
-            "customText": null,
-            "noTeaser": false
-        },
-        "rawContent": ""
-    },
-    {
-        "attrs": {},
-        "rawContent": "\n"
+        "blockName": "core/freeform",
+        "innerHtml": "<!--more-->\n"
     }
 ]

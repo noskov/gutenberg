@@ -1,14 +1,6 @@
 [
     {
-        "blockName": "core/more",
-        "attrs": {
-            "customText": "Continue Reading",
-            "noTeaser": true
-        },
-        "rawContent": ""
-    },
-    {
-        "attrs": {},
-        "rawContent": "\n"
+        "blockName": "core/freeform",
+        "innerHtml": "<!--more Continue Reading-->\n<!--noteaser-->\n"
     }
 ]

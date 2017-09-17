@@ -1,15 +1,11 @@
 [
     {
         "uid": "_uid_0",
-        "name": "core/latest-posts",
+        "name": "core/freeform",
         "isValid": true,
         "attributes": {
-            "postsToShow": 5,
-            "displayPostDate": false,
-            "layout": "list",
-            "columns": 3,
-            "align": "center"
+            "content": "<!-- wp:core/latest-posts {\"postsToShow\":5,\"displayPostDate\":false} /-->"
         },
-        "originalContent": ""
+        "originalContent": "<!-- wp:core/latest-posts {\"postsToShow\":5,\"displayPostDate\":false} /-->"
     }
 ]

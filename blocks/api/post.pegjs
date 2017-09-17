@@ -5,6 +5,13 @@
 // are the same as `json_decode`
 ?> **/
 
+function freeform( s ) {
+  return s.length && {
+    blockName: 'core/freeform',
+    innerHtml: s
+  };
+}
+
 function maybeJSON( s ) {
 	try {
 		return JSON.parse( s );
@@ -16,9 +23,9 @@ function maybeJSON( s ) {
 }
 
 Block_List
-  = pre:(!Block_Start a:. { /** <?php return $a; ?> **/ return a })*
-    WS* ts:(t:Token WS* { /** <?php return $t; ?> **/ return t })*
-    post:.*
+  = pre:$(!Token .)*
+    ts:(t:Token html:$((!Token .)*) { /** <?php return $t; ?> **/ return [ t, html ] })*
+    post:$(.*)
   { /** <?php
     $blocks = [];
     if ( ! empty( $pre ) ) { $blocks[] = $pre; }
@@ -29,9 +36,9 @@ Block_List
     ?> **/
 
     return [
-      pre.length && { blockName: 'core/freeform', innerHtml: pre.join('') },
-      ...ts,
-      post.length && { blockName: 'core/freeform', innerHtml: post.join('') },
+      freeform( pre ),
+      ...ts.reduce( ( out, [ t, h ] ) => [ ...out, t, freeform( h ) ], [] ),
+      freeform( post ),
     ].filter( a => a )
   }
 
@@ -72,14 +79,16 @@ Block_Void
     return array(
       'blockName'  => $blockName,
       'attrs'      => $attrs,
-      'rawContent' => '',
+      'innerBlocks' => array(),
+      'innerHtml' => '',
     );
     ?> **/
 
     return {
       blockName: blockName,
       attrs: attrs,
-      rawContent: ''
+      innerBlocks: [],
+      innerHtml: ''
     };
   }
 
