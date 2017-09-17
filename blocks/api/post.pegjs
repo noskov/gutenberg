@@ -29,7 +29,10 @@ Block_List
   { /** <?php
     $blocks = [];
     if ( ! empty( $pre ) ) { $blocks[] = $pre; }
-    $blocks = array_merge( $blocks, $ts );
+    foreach ( $ts as $pair ) {
+      $blocks[] = $pair[ 0 ];
+      if ( ! empty( $pair[ 1 ] ) ) { $blocks[] = $pair[ 1 ] };
+    }
     if ( ! empty( $post ) ) { $blocks[] = $post; }
 
     return $blocks;

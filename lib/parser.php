@@ -267,7 +267,10 @@ class Gutenberg_PEG_Parser {
     private function peg_f1($pre, $ts, $post) {
         $blocks = [];
         if ( ! empty( $pre ) ) { $blocks[] = $pre; }
-        $blocks = array_merge( $blocks, $ts );
+        foreach ( $ts as $pair ) {
+          $blocks[] = $pair[ 0 ];
+          if ( ! empty( $pair[ 1 ] ) ) { $blocks[] = $pair[ 1 ] };
+        }
         if ( ! empty( $post ) ) { $blocks[] = $post; }
 
         return $blocks;
