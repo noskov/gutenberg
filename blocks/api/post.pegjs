@@ -15,17 +15,30 @@ function maybeJSON( s ) {
 
 }
 
-Document
-  = WP_Block_List
+Block_List
+  = pre:(!WP_Block_Start a:. { /** <?php return $a; ?> **/ return a })*
+    WS* ts:(t:Token WS* { /** <?php return $t; ?> **/ return t })*
+    post:.*
+  { /** <?php
+    $blocks = [];
+    if ( ! empty( $pre ) ) { $blocks[] = $pre; }
+    $blocks = array_merge( $blocks, $ts );
+    if ( ! empty( $post ) ) { $blocks[] = $post; }
 
-WP_Block_List
-  = WP_Block*
+    return $blocks;
+    ?> **/
 
-WP_Block
+    return [
+      pre.length && { blockName: 'core/freeform', innerHtml: pre.join('') },
+      ...ts,
+      post.length && { blockName: 'core/freeform', innerHtml: post.join('') },
+    ].filter( a => a )
+  }
+
+Token
   = WP_Tag_More
   / WP_Block_Void
   / WP_Block_Balanced
-  / WP_Block_Html
 
 WP_Tag_More
   = "<!--" WS* "more" customText:(WS+ text:$((!(WS* "-->") .)+) { /** <?php return $text; ?> **/ return text })? WS* "-->" noTeaser:(WS* "<!--noteaser-->")?
@@ -71,47 +84,42 @@ WP_Block_Void
   }
 
 WP_Block_Balanced
-  = s:WP_Block_Start ts:(!WP_Block_End c:Any {
-    /** <?php return $c; ?> **/
-    return c;
-  })* e:WP_Block_End & {
+  = s:WP_Block_Start children:WP_Block_Matter+ e:WP_Block_End & {
     /** <?php return $s['blockName'] === $e['blockName']; ?> **/
     return s.blockName === e.blockName;
   }
   {
     /** <?php
+    $innerBlocks = array_filter( $children, function( $a ) {
+      return ! is_string( $a );
+    } );
+
+    $innerHtml = array_filter( $children, function( $a ) {
+      return is_string( $a );
+    } );
+
     return array(
       'blockName'  => $s['blockName'],
       'attrs'      => $s['attrs'],
-      'rawContent' => implode( '', $ts ),
+      'innerBlocks'  => $innerBlocks,
+      'innerHtml'  => implode( '', $innerHtml ),
     );
     ?> **/
+
+    var innerBlocks = children.filter( a => 'string' !== typeof a );
+    var innerHtml = children.filter( a => 'string' === typeof a ).join('');
 
     return {
       blockName: s.blockName,
       attrs: s.attrs,
-      rawContent: ts.join( '' )
+      innerBlocks: innerBlocks,
+      innerHtml: innerHtml
     };
   }
 
-WP_Block_Html
-  = ts:(!WP_Block_Balanced !WP_Block_Void !WP_Tag_More c:Any {
-    /** <?php return $c; ?> **/
-    return c;
-  })+
-  {
-    /** <?php
-    return array(
-      'attrs'      => array(),
-      'rawContent' => implode( '', $ts ),
-    );
-    ?> **/
-
-    return {
-      attrs: {},
-      rawContent: ts.join( '' )
-    }
-  }
+WP_Block_Matter
+  = Token
+  / (!WP_Block_End a:. { /** <?php return $a; ?> **/ return a })
 
 WP_Block_Start
   = "<!--" WS+ "wp:" blockName:WP_Block_Name WS+ attrs:(a:WP_Block_Attributes WS+ {
