@@ -8,7 +8,7 @@
 function freeform( s ) {
   return s.length && {
     blockName: 'core/freeform',
-    rawContent: s
+    innerHtml: s
   };
 }
 
@@ -59,7 +59,7 @@ Tag_More
          'customText' => $customText,
          'noTeaser' => (bool) $noTeaser
        ),
-       'rawContent' => ''
+       'innerHtml' => ''
     );
     ?> **/
     return {
@@ -68,7 +68,7 @@ Tag_More
         customText: customText,
         noTeaser: !! noTeaser
       },
-      rawContent: ''
+      innerHtml: ''
     }
   }
 
@@ -83,7 +83,7 @@ Block_Void
       'blockName'  => $blockName,
       'attrs'      => $attrs,
       'innerBlocks' => array(),
-      'rawContent' => '',
+      'innerHtml' => '',
     );
     ?> **/
 
@@ -91,15 +91,12 @@ Block_Void
       blockName: blockName,
       attrs: attrs,
       innerBlocks: [],
-      rawContent: ''
+      innerHtml: ''
     };
   }
 
 Block_Balanced
-  = s:Block_Start children:Block_Matter+ e:Block_End & {
-    /** <?php return $s['blockName'] === $e['blockName']; ?> **/
-    return s.blockName === e.blockName;
-  }
+  = s:Block_Start children:(Token / $(!Block_End .))+ e:Block_End
   {
     /** <?php
     $innerBlocks = array_filter( $children, function( $a ) {
@@ -125,13 +122,9 @@ Block_Balanced
       blockName: s.blockName,
       attrs: s.attrs,
       innerBlocks: innerBlocks,
-      rawContent: innerHtml
+      innerHtml: innerHtml
     };
   }
-
-Block_Matter
-  = Token
-  / (!Block_End a:. { /** <?php return $a; ?> **/ return a })
 
 Block_Start
   = "<!--" WS+ "wp:" blockName:Block_Name WS+ attrs:(a:Block_Attributes WS+ {
