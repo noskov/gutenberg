@@ -4,11 +4,10 @@
         "attrs": {
             "align": "right"
         },
-        "innerBlocks": [],
         "rawContent": "\n<div class=\"wp-block-audio alignright\">\n    <audio controls=\"\" src=\"https://media.simplecast.com/episodes/audio/80564/draft-podcast-51-livePublish2.mp3\"></audio>\n</div>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

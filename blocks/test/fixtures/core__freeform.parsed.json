@@ -2,11 +2,10 @@
     {
         "blockName": "core/freeform",
         "attrs": null,
-        "innerBlocks": [],
         "rawContent": "\nTesting freeform block with some\n<div class=\"wp-some-class\">\n\tHTML <span style=\"color: red;\">content</span>\n</div>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

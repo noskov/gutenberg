@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://reverbnation.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-reverbnation\">\n    https://reverbnation.com/\n    <figcaption>Embedded content from reverbnation</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

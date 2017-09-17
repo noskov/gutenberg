@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://flickr.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-flickr\">\n    https://flickr.com/\n    <figcaption>Embedded content from flickr</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

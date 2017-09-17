@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://smugmug.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-smugmug\">\n    https://smugmug.com/\n    <figcaption>Embedded content from smugmug</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

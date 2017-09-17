@@ -5,11 +5,10 @@
             "url": "https://cldup.com/uuUqE_dXzy.jpg",
             "hasBackgroundDim": true
         },
-        "innerBlocks": [],
         "rawContent": "\n<section class=\"wp-block-cover-image has-background-dim\" style=\"background-image:url(https://cldup.com/uuUqE_dXzy.jpg);\">\n    <h2>Guten Berg!</h2>\n</section>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

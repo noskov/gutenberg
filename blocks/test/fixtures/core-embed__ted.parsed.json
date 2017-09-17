@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://ted.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-ted\">\n    https://ted.com/\n    <figcaption>Embedded content from ted</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

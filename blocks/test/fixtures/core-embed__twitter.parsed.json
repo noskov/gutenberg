@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://twitter.com/automattic"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-twitter\">\n    https://twitter.com/automattic\n    <figcaption>We are Automattic</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

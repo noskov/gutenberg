@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://scribd.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-scribd\">\n    https://scribd.com/\n    <figcaption>Embedded content from scribd</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

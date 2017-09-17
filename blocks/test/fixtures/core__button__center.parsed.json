@@ -4,11 +4,10 @@
         "attrs": {
             "align": "center"
         },
-        "innerBlocks": [],
         "rawContent": "\n<div class=\"wp-block-button aligncenter\"><a href=\"https://github.com/WordPress/gutenberg\">Help build Gutenberg</a></div>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

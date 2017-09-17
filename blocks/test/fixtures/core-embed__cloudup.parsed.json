@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://cloudup.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-cloudup\">\n    https://cloudup.com/\n    <figcaption>Embedded content from cloudup</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

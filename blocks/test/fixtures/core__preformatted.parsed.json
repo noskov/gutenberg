@@ -2,11 +2,10 @@
     {
         "blockName": "core/preformatted",
         "attrs": null,
-        "innerBlocks": [],
         "rawContent": "\n<pre class=\"wp-block-preformatted\">Some <em>preformatted</em> text...<br>And more!</pre>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

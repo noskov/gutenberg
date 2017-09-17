@@ -4,11 +4,10 @@
         "attrs": {
             "align": "center"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-image\"><img src=\"https://cldup.com/YLYhpou2oq.jpg\" class=\"aligncenter\"/><figcaption>Give it a try. Press the &quot;really wide&quot; button on the image toolbar.</figcaption></figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://collegehumor.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-collegehumor\">\n    https://collegehumor.com/\n    <figcaption>Embedded content from collegehumor</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

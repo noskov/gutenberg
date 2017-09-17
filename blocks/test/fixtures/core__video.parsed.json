@@ -2,11 +2,10 @@
     {
         "blockName": "core/video",
         "attrs": null,
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-video\"><video src=\"https://awesome-fake.video/file.mp4\" controls=\"\"></video></figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

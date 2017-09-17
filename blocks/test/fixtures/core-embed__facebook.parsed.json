@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://facebook.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-facebook\">\n    https://facebook.com/\n    <figcaption>Embedded content from facebook</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

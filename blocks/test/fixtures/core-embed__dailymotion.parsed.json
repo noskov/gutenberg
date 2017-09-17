@@ -4,11 +4,10 @@
         "attrs": {
             "url": "https://dailymotion.com/"
         },
-        "innerBlocks": [],
         "rawContent": "\n<figure class=\"wp-block-embed-dailymotion\">\n    https://dailymotion.com/\n    <figcaption>Embedded content from dailymotion</figcaption>\n</figure>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

@@ -6,11 +6,10 @@
             "displayAsDropdown": false,
             "showHierarchy": false
         },
-        "innerBlocks": [],
         "rawContent": ""
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]

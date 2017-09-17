@@ -2,11 +2,10 @@
     {
         "blockName": "core/heading",
         "attrs": null,
-        "innerBlocks": [],
         "rawContent": "\n<h2>The <em>Inserter</em> Tool</h2>\n"
     },
     {
-        "blockName": "core/freeform",
+        "attrs": {},
         "rawContent": "\n"
     }
 ]
