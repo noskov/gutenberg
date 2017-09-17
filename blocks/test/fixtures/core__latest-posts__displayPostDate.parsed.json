@@ -1,6 +1,15 @@
 [
     {
+        "blockName": "core/latest-posts",
+        "attrs": {
+            "postsToShow": 5,
+            "displayPostDate": true
+        },
+        "innerBlocks": [],
+        "rawContent": ""
+    },
+    {
         "blockName": "core/freeform",
-        "innerHtml": "<!-- wp:core/latest-posts {\"postsToShow\":5,\"displayPostDate\":true} /-->\n"
+        "rawContent": "\n"
     }
 ]

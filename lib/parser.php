@@ -289,7 +289,7 @@ class Gutenberg_PEG_Parser {
           'blockName'  => $blockName,
           'attrs'      => $attrs,
           'innerBlocks' => array(),
-          'innerHtml' => '',
+          'rawContent' => '',
         );
         }
     private function peg_f6($s, $children, $e) { return $s['blockName'] === $e['blockName']; }

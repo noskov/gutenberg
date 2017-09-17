@@ -1,6 +1,16 @@
 [
     {
+        "blockName": "core/categories",
+        "attrs": {
+            "showPostCounts": false,
+            "displayAsDropdown": false,
+            "showHierarchy": false
+        },
+        "innerBlocks": [],
+        "rawContent": ""
+    },
+    {
         "blockName": "core/freeform",
-        "innerHtml": "<!-- wp:core/categories {\"showPostCounts\":false,\"displayAsDropdown\":false,\"showHierarchy\":false} /-->\n"
+        "rawContent": "\n"
     }
 ]

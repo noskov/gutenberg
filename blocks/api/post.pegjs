@@ -8,7 +8,7 @@
 function freeform( s ) {
   return s.length && {
     blockName: 'core/freeform',
-    innerHtml: s
+    rawContent: s
   };
 }
 
@@ -80,7 +80,7 @@ Block_Void
       'blockName'  => $blockName,
       'attrs'      => $attrs,
       'innerBlocks' => array(),
-      'innerHtml' => '',
+      'rawContent' => '',
     );
     ?> **/
 
@@ -88,7 +88,7 @@ Block_Void
       blockName: blockName,
       attrs: attrs,
       innerBlocks: [],
-      innerHtml: ''
+      rawContent: ''
     };
   }
 
@@ -122,7 +122,7 @@ Block_Balanced
       blockName: s.blockName,
       attrs: s.attrs,
       innerBlocks: innerBlocks,
-      innerHtml: innerHtml
+      rawContent: innerHtml
     };
   }
 

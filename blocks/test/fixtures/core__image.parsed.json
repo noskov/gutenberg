@@ -3,6 +3,10 @@
         "blockName": "core/image",
         "attrs": null,
         "innerBlocks": [],
-        "innerHtml": "\n<figure class=\"wp-block-image\"><img src=\"https://cldup.com/uuUqE_dXzy.jpg\" /></figure>\n"
+        "rawContent": "\n<figure class=\"wp-block-image\"><img src=\"https://cldup.com/uuUqE_dXzy.jpg\" /></figure>\n"
+    },
+    {
+        "blockName": "core/freeform",
+        "rawContent": "\n"
     }
 ]
