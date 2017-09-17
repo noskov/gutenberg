@@ -88,7 +88,7 @@ attributes: {
 },
 ```
 
-* **See: [Attribute Sources](/reference/attribute-sources/).**
+* **See: [Attribute Sources](/reference/attributes/).**
 
 ### Transforms (optional)
 
