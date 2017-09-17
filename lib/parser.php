@@ -329,7 +329,7 @@ class Gutenberg_PEG_Parser {
       $s2 = $this->peg_currPos;
       $s3 = $this->peg_currPos;
       $this->peg_silentFails++;
-      $s4 = $this->peg_parseWP_Block_Start();
+      $s4 = $this->peg_parseBlock_Start();
       $this->peg_silentFails--;
       if ($s4 === $this->peg_FAILED) {
         $s3 = null;
@@ -364,7 +364,7 @@ class Gutenberg_PEG_Parser {
         $s2 = $this->peg_currPos;
         $s3 = $this->peg_currPos;
         $this->peg_silentFails++;
-        $s4 = $this->peg_parseWP_Block_Start();
+        $s4 = $this->peg_parseBlock_Start();
         $this->peg_silentFails--;
         if ($s4 === $this->peg_FAILED) {
           $s3 = null;
@@ -498,18 +498,18 @@ class Gutenberg_PEG_Parser {
 
     private function peg_parseToken() {
 
-      $s0 = $this->peg_parseWP_Tag_More();
+      $s0 = $this->peg_parseTag_More();
       if ($s0 === $this->peg_FAILED) {
-        $s0 = $this->peg_parseWP_Block_Void();
+        $s0 = $this->peg_parseBlock_Void();
         if ($s0 === $this->peg_FAILED) {
-          $s0 = $this->peg_parseWP_Block_Balanced();
+          $s0 = $this->peg_parseBlock_Balanced();
         }
       }
 
       return $s0;
     }
 
-    private function peg_parseWP_Tag_More() {
+    private function peg_parseTag_More() {
 
       $s0 = $this->peg_currPos;
       if ($this->input_substr($this->peg_currPos, 4) === $this->peg_c1) {
@@ -783,7 +783,7 @@ class Gutenberg_PEG_Parser {
       return $s0;
     }
 
-    private function peg_parseWP_Block_Void() {
+    private function peg_parseBlock_Void() {
 
       $s0 = $this->peg_currPos;
       if ($this->input_substr($this->peg_currPos, 4) === $this->peg_c1) {
@@ -817,7 +817,7 @@ class Gutenberg_PEG_Parser {
             }
           }
           if ($s3 !== $this->peg_FAILED) {
-            $s4 = $this->peg_parseWP_Block_Name();
+            $s4 = $this->peg_parseBlock_Name();
             if ($s4 !== $this->peg_FAILED) {
               $s5 = array();
               $s6 = $this->peg_parseWS();
@@ -831,7 +831,7 @@ class Gutenberg_PEG_Parser {
               }
               if ($s5 !== $this->peg_FAILED) {
                 $s6 = $this->peg_currPos;
-                $s7 = $this->peg_parseWP_Block_Attributes();
+                $s7 = $this->peg_parseBlock_Attributes();
                 if ($s7 !== $this->peg_FAILED) {
                   $s8 = array();
                   $s9 = $this->peg_parseWS();
@@ -904,23 +904,23 @@ class Gutenberg_PEG_Parser {
       return $s0;
     }
 
-    private function peg_parseWP_Block_Balanced() {
+    private function peg_parseBlock_Balanced() {
 
       $s0 = $this->peg_currPos;
-      $s1 = $this->peg_parseWP_Block_Start();
+      $s1 = $this->peg_parseBlock_Start();
       if ($s1 !== $this->peg_FAILED) {
         $s2 = array();
-        $s3 = $this->peg_parseWP_Block_Matter();
+        $s3 = $this->peg_parseBlock_Matter();
         if ($s3 !== $this->peg_FAILED) {
           while ($s3 !== $this->peg_FAILED) {
             $s2[] = $s3;
-            $s3 = $this->peg_parseWP_Block_Matter();
+            $s3 = $this->peg_parseBlock_Matter();
           }
         } else {
           $s2 = $this->peg_FAILED;
         }
         if ($s2 !== $this->peg_FAILED) {
-          $s3 = $this->peg_parseWP_Block_End();
+          $s3 = $this->peg_parseBlock_End();
           if ($s3 !== $this->peg_FAILED) {
             $this->peg_reportedPos = $this->peg_currPos;
             $s4 = $this->peg_f7($s1, $s2, $s3);
@@ -953,14 +953,14 @@ class Gutenberg_PEG_Parser {
       return $s0;
     }
 
-    private function peg_parseWP_Block_Matter() {
+    private function peg_parseBlock_Matter() {
 
       $s0 = $this->peg_parseToken();
       if ($s0 === $this->peg_FAILED) {
         $s0 = $this->peg_currPos;
         $s1 = $this->peg_currPos;
         $this->peg_silentFails++;
-        $s2 = $this->peg_parseWP_Block_End();
+        $s2 = $this->peg_parseBlock_End();
         $this->peg_silentFails--;
         if ($s2 === $this->peg_FAILED) {
           $s1 = null;
@@ -995,7 +995,7 @@ class Gutenberg_PEG_Parser {
       return $s0;
     }
 
-    private function peg_parseWP_Block_Start() {
+    private function peg_parseBlock_Start() {
 
       $s0 = $this->peg_currPos;
       if ($this->input_substr($this->peg_currPos, 4) === $this->peg_c1) {
@@ -1029,7 +1029,7 @@ class Gutenberg_PEG_Parser {
             }
           }
           if ($s3 !== $this->peg_FAILED) {
-            $s4 = $this->peg_parseWP_Block_Name();
+            $s4 = $this->peg_parseBlock_Name();
             if ($s4 !== $this->peg_FAILED) {
               $s5 = array();
               $s6 = $this->peg_parseWS();
@@ -1043,7 +1043,7 @@ class Gutenberg_PEG_Parser {
               }
               if ($s5 !== $this->peg_FAILED) {
                 $s6 = $this->peg_currPos;
-                $s7 = $this->peg_parseWP_Block_Attributes();
+                $s7 = $this->peg_parseBlock_Attributes();
                 if ($s7 !== $this->peg_FAILED) {
                   $s8 = array();
                   $s9 = $this->peg_parseWS();
@@ -1116,7 +1116,7 @@ class Gutenberg_PEG_Parser {
       return $s0;
     }
 
-    private function peg_parseWP_Block_End() {
+    private function peg_parseBlock_End() {
 
       $s0 = $this->peg_currPos;
       if ($this->input_substr($this->peg_currPos, 4) === $this->peg_c1) {
@@ -1150,7 +1150,7 @@ class Gutenberg_PEG_Parser {
             }
           }
           if ($s3 !== $this->peg_FAILED) {
-            $s4 = $this->peg_parseWP_Block_Name();
+            $s4 = $this->peg_parseBlock_Name();
             if ($s4 !== $this->peg_FAILED) {
               $s5 = array();
               $s6 = $this->peg_parseWS();
@@ -1204,7 +1204,7 @@ class Gutenberg_PEG_Parser {
       return $s0;
     }
 
-    private function peg_parseWP_Block_Name() {
+    private function peg_parseBlock_Name() {
 
       $s0 = $this->peg_currPos;
       $s1 = $this->peg_currPos;
@@ -1286,7 +1286,7 @@ class Gutenberg_PEG_Parser {
       return $s0;
     }
 
-    private function peg_parseWP_Block_Attributes() {
+    private function peg_parseBlock_Attributes() {
 
       $s0 = $this->peg_currPos;
       $s1 = $this->peg_currPos;

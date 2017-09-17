@@ -16,7 +16,7 @@ function maybeJSON( s ) {
 }
 
 Block_List
-  = pre:(!WP_Block_Start a:. { /** <?php return $a; ?> **/ return a })*
+  = pre:(!Block_Start a:. { /** <?php return $a; ?> **/ return a })*
     WS* ts:(t:Token WS* { /** <?php return $t; ?> **/ return t })*
     post:.*
   { /** <?php
@@ -36,11 +36,11 @@ Block_List
   }
 
 Token
-  = WP_Tag_More
-  / WP_Block_Void
-  / WP_Block_Balanced
+  = Tag_More
+  / Block_Void
+  / Block_Balanced
 
-WP_Tag_More
+Tag_More
   = "<!--" WS* "more" customText:(WS+ text:$((!(WS* "-->") .)+) { /** <?php return $text; ?> **/ return text })? WS* "-->" noTeaser:(WS* "<!--noteaser-->")?
   { /** <?php
     return array(
@@ -62,8 +62,8 @@ WP_Tag_More
     }
   }
 
-WP_Block_Void
-  = "<!--" WS+ "wp:" blockName:WP_Block_Name WS+ attrs:(a:WP_Block_Attributes WS+ {
+Block_Void
+  = "<!--" WS+ "wp:" blockName:Block_Name WS+ attrs:(a:Block_Attributes WS+ {
     /** <?php return $a; ?> **/
     return a;
   })? "/-->"
@@ -83,8 +83,8 @@ WP_Block_Void
     };
   }
 
-WP_Block_Balanced
-  = s:WP_Block_Start children:WP_Block_Matter+ e:WP_Block_End & {
+Block_Balanced
+  = s:Block_Start children:Block_Matter+ e:Block_End & {
     /** <?php return $s['blockName'] === $e['blockName']; ?> **/
     return s.blockName === e.blockName;
   }
@@ -117,12 +117,12 @@ WP_Block_Balanced
     };
   }
 
-WP_Block_Matter
+Block_Matter
   = Token
-  / (!WP_Block_End a:. { /** <?php return $a; ?> **/ return a })
+  / (!Block_End a:. { /** <?php return $a; ?> **/ return a })
 
-WP_Block_Start
-  = "<!--" WS+ "wp:" blockName:WP_Block_Name WS+ attrs:(a:WP_Block_Attributes WS+ {
+Block_Start
+  = "<!--" WS+ "wp:" blockName:Block_Name WS+ attrs:(a:Block_Attributes WS+ {
     /** <?php return $a; ?> **/
     return a;
   })? "-->"
@@ -140,8 +140,8 @@ WP_Block_Start
     };
   }
 
-WP_Block_End
-  = "<!--" WS+ "/wp:" blockName:WP_Block_Name WS+ "-->"
+Block_End
+  = "<!--" WS+ "/wp:" blockName:Block_Name WS+ "-->"
   {
     /** <?php
     return array(
@@ -154,10 +154,10 @@ WP_Block_End
     };
   }
 
-WP_Block_Name
+Block_Name
   = $(ASCII_Letter (ASCII_AlphaNumeric / "/" ASCII_AlphaNumeric)*)
 
-WP_Block_Attributes
+Block_Attributes
   = attrs:$("{" (!("}" WS+ """/"? "-->") .)* "}")
   {
     /** <?php return json_decode( $attrs, true ); ?> **/
